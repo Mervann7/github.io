@@ -2,319 +2,1020 @@
 
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TesisAnt - Çok Yakında</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGS Çalışma Takip</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --surface2: #1c2130;
+    --border: #252b3b;
+    --accent: #4f8eff;
+    --accent2: #7c5cfc;
+    --green: #22d3a4;
+    --red: #f4546a;
+    --yellow: #f5c842;
+    --text: #e8eaf0;
+    --muted: #6b7593;
+    --radius: 14px;
+  }
 
-```
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #ffffff;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        position: relative;
-    }
+- { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* Üst Sol Köşe Dalgalar */
-    .wave-top-left {
-        position: absolute;
-        top: -50px;
-        left: -50px;
-        width: 400px;
-        height: 400px;
-        opacity: 0.8;
-    }
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+min-height: 100vh;
+overflow-x: hidden;
+}
 
-    .wave-top-left::before {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: #5eb3e0;
-        border-radius: 0 0 50% 0;
-        transform: rotate(-10deg);
-    }
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 9999;
+opacity: .5;
+}
 
-    .wave-top-left::after {
-        content: '';
-        position: absolute;
-        width: 90%;
-        height: 90%;
-        background: #2d5ba6;
-        border-radius: 0 0 50% 0;
-        transform: rotate(-5deg);
-        top: 20px;
-        left: 20px;
-    }
+.blob { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: .18; }
+.blob1 { width: 500px; height: 500px; background: var(–accent2); top: -150px; left: -100px; }
+.blob2 { width: 400px; height: 400px; background: var(–accent); bottom: -100px; right: -80px; }
 
-    /* Alt Sağ Köşe Dalgalar */
-    .wave-bottom-right {
-        position: absolute;
-        bottom: -50px;
-        right: -50px;
-        width: 450px;
-        height: 450px;
-        opacity: 0.8;
-    }
+.page { display: none; position: relative; z-index: 1; min-height: 100vh; }
+.page.active { display: flex; }
 
-    .wave-bottom-right::before {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: #5eb3e0;
-        border-radius: 50% 0 0 0;
-        transform: rotate(10deg);
-    }
+/* LOGIN */
+#loginPage { align-items: center; justify-content: center; padding: 24px; }
 
-    .wave-bottom-right::after {
-        content: '';
-        position: absolute;
-        width: 90%;
-        height: 90%;
-        background: #2d5ba6;
-        border-radius: 50% 0 0 0;
-        transform: rotate(5deg);
-        bottom: 20px;
-        right: 20px;
-    }
+.login-card {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 24px;
+padding: 48px 40px;
+width: 100%;
+max-width: 400px;
+box-shadow: 0 40px 80px rgba(0,0,0,.5);
+animation: fadeUp .5s ease both;
+}
 
-    /* İçerik Container */
-    .container {
-        text-align: center;
-        z-index: 10;
-        padding: 60px 40px;
-        max-width: 700px;
-        position: relative;
-    }
+.login-logo {
+font-family: ‘Syne’, sans-serif;
+font-size: 28px;
+font-weight: 800;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 6px;
+letter-spacing: -1px;
+}
 
-    /* Logo */
-    .logo {
-        width: 180px;
-        height: 180px;
-        margin: 0 auto 30px;
-        animation: fadeInDown 1s ease-out;
-    }
+.login-sub { color: var(–muted); font-size: 13px; margin-bottom: 36px; }
 
-    .logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+label {
+display: block;
+font-size: 12px;
+font-weight: 500;
+color: var(–muted);
+letter-spacing: .06em;
+text-transform: uppercase;
+margin-bottom: 7px;
+}
 
-    /* TesisAnt Başlık */
-    .brand-name {
-        font-size: 4rem;
-        font-weight: bold;
-        color: #2d5ba6;
-        margin-bottom: 10px;
-        animation: fadeIn 1.2s ease-out;
-    }
+input[type=“text”], input[type=“password”], input[type=“date”], input[type=“number”], select {
+width: 100%;
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 12px 16px;
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 14px;
+outline: none;
+transition: border-color .2s, box-shadow .2s;
+margin-bottom: 20px;
+}
 
-    .subtitle {
-        font-size: 1.5rem;
-        color: #5eb3e0;
-        margin-bottom: 50px;
-        font-weight: 300;
-        animation: fadeIn 1.4s ease-out;
-    }
+input:focus, select:focus {
+border-color: var(–accent);
+box-shadow: 0 0 0 3px rgba(79,142,255,.12);
+}
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
+select option { background: var(–surface2); }
 
-    /* Çok Yakında Bölümü */
-    .coming-soon {
-        background: linear-gradient(135deg, #2d5ba6 0%, #5eb3e0 100%);
-        color: white;
-        padding: 40px 60px;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(45, 91, 166, 0.3);
-        margin-bottom: 40px;
-        animation: scaleIn 1.6s ease-out;
-    }
+.btn-primary {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+color: #fff;
+width: 100%;
+font-size: 15px;
+padding: 14px;
+border-radius: 10px;
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 500;
+cursor: pointer;
+border: none;
+box-shadow: 0 8px 24px rgba(79,142,255,.3);
+transition: all .18s ease;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(79,142,255,.4); }
 
-    @keyframes scaleIn {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
+.login-err {
+color: var(–red);
+font-size: 13px;
+margin-bottom: 16px;
+display: none;
+padding: 10px 14px;
+background: rgba(244,84,106,.1);
+border-radius: 8px;
+border: 1px solid rgba(244,84,106,.25);
+}
 
-    .coming-soon h1 {
-        font-size: 3rem;
-        margin-bottom: 15px;
-        font-weight: 600;
-    }
+/* DASHBOARD */
+#dashPage { flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
 
-    .coming-soon p {
-        font-size: 1.3rem;
-        opacity: 0.95;
-        line-height: 1.6;
-    }
+.dash-header { text-align: center; margin-bottom: 52px; animation: fadeUp .4s ease both; }
 
-    /* İletişim Bilgileri */
-    .contact-info {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        animation: fadeInUp 1.8s ease-out;
-    }
+.dash-header h1 {
+font-family: ‘Syne’, sans-serif;
+font-size: 40px;
+font-weight: 800;
+letter-spacing: -1.5px;
+background: linear-gradient(135deg, #e8eaf0, var(–accent));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
 
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+.dash-header p { color: var(–muted); margin-top: 8px; font-size: 15px; }
 
-    .contact-item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-        color: #2d5ba6;
-        font-size: 1.1rem;
-        padding: 15px;
-        background: rgba(94, 179, 224, 0.1);
-        border-radius: 10px;
-        transition: all 0.3s ease;
-    }
+.dash-cards {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 20px;
+max-width: 640px;
+width: 100%;
+animation: fadeUp .45s .1s ease both;
+}
 
-    .contact-item:hover {
-        background: rgba(94, 179, 224, 0.2);
-        transform: translateX(5px);
-    }
+.dash-card {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 20px;
+padding: 36px 28px;
+cursor: pointer;
+transition: all .22s ease;
+position: relative;
+overflow: hidden;
+}
 
-    .contact-icon {
-        width: 30px;
-        height: 30px;
-        background: #2d5ba6;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: bold;
-    }
+.dash-card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 3px;
+border-radius: 20px 20px 0 0;
+transition: opacity .2s;
+opacity: 0;
+}
 
-    /* Responsive */
-    @media (max-width: 768px) {
-        .brand-name {
-            font-size: 2.5rem;
-        }
+.dash-card.konu::before   { background: linear-gradient(90deg, var(–green), var(–accent)); }
+.dash-card.deneme::before { background: linear-gradient(90deg, var(–accent2), var(–red)); }
 
-        .subtitle {
-            font-size: 1.1rem;
-        }
+.dash-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,.4); border-color: #333; }
+.dash-card:hover::before { opacity: 1; }
 
-        .coming-soon h1 {
-            font-size: 2rem;
-        }
+.dash-card-icon { font-size: 36px; margin-bottom: 16px; }
+.dash-card h2 { font-family: ‘Syne’, sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.dash-card p  { color: var(–muted); font-size: 13px; line-height: 1.5; }
 
-        .coming-soon p {
-            font-size: 1.1rem;
-        }
+.logout-btn {
+margin-top: 32px;
+color: var(–muted);
+font-size: 13px;
+cursor: pointer;
+background: none;
+border: none;
+font-family: ‘DM Sans’, sans-serif;
+transition: color .2s;
+animation: fadeUp .5s .2s ease both;
+}
+.logout-btn:hover { color: var(–text); }
 
-        .coming-soon {
-            padding: 30px 30px;
-        }
+/* KONU / DENEME PAGE */
+#konuPage, #denemePage { flex-direction: column; padding: 0; }
 
-        .wave-top-left,
-        .wave-bottom-right {
-            width: 250px;
-            height: 250px;
-        }
+.app-topbar {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 16px 28px;
+border-bottom: 1px solid var(–border);
+background: rgba(13,15,20,.8);
+backdrop-filter: blur(12px);
+position: sticky;
+top: 0;
+z-index: 10;
+}
 
-        .logo {
-            width: 120px;
-            height: 120px;
-        }
+.app-topbar-title { font-family: ‘Syne’, sans-serif; font-size: 17px; font-weight: 700; flex: 1; }
 
-        .contact-item {
-            font-size: 0.95rem;
-        }
-    }
+.back-btn {
+background: var(–surface2);
+border: 1px solid var(–border);
+color: var(–text);
+padding: 8px 16px;
+border-radius: 8px;
+font-size: 13px;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: all .15s;
+}
+.back-btn:hover { border-color: var(–accent); color: var(–accent); }
+
+.konu-container { max-width: 860px; margin: 0 auto; width: 100%; padding: 32px 24px; }
+
+.tab-bar {
+display: flex;
+gap: 8px;
+margin-bottom: 28px;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 6px;
+}
+
+.tab {
+flex: 1;
+padding: 10px;
+text-align: center;
+border-radius: 8px;
+cursor: pointer;
+font-size: 14px;
+font-weight: 500;
+transition: all .18s;
+color: var(–muted);
+}
+
+.tab.active {
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+color: #fff;
+box-shadow: 0 4px 12px rgba(79,142,255,.25);
+}
+
+.tab:hover:not(.active) { color: var(–text); background: var(–surface2); }
+
+.progress-bar-wrap {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 20px 24px;
+margin-bottom: 24px;
+display: flex;
+align-items: center;
+gap: 20px;
+}
+
+.progress-info { flex: 1; }
+.progress-info h3 { font-family: ‘Syne’, sans-serif; font-size: 15px; margin-bottom: 8px; }
+.progress-track { height: 8px; background: var(–surface2); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(–green), var(–accent)); transition: width .4s ease; }
+
+.progress-pct {
+font-family: ‘Syne’, sans-serif;
+font-size: 24px;
+font-weight: 800;
+color: var(–green);
+min-width: 60px;
+text-align: right;
+}
+
+.ders-panel { display: none; }
+.ders-panel.active { display: block; }
+
+.konu-group { background: var(–surface); border: 1px solid var(–border); border-radius: 14px; overflow: hidden; margin-bottom: 12px; }
+
+.konu-group-header {
+padding: 14px 20px;
+background: var(–surface2);
+font-size: 12px;
+font-weight: 600;
+letter-spacing: .08em;
+text-transform: uppercase;
+color: var(–muted);
+border-bottom: 1px solid var(–border);
+}
+
+.konu-item {
+display: flex;
+align-items: center;
+gap: 14px;
+padding: 14px 20px;
+border-bottom: 1px solid var(–border);
+cursor: pointer;
+transition: background .15s;
+user-select: none;
+}
+
+.konu-item:last-child { border-bottom: none; }
+.konu-item:hover { background: rgba(255,255,255,.03); }
+
+.konu-check {
+width: 22px;
+height: 22px;
+border-radius: 6px;
+border: 2px solid var(–border);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+transition: all .18s;
+font-size: 12px;
+}
+
+.konu-item.done .konu-check { background: var(–green); border-color: var(–green); color: #000; box-shadow: 0 0 10px rgba(34,211,164,.3); }
+
+.konu-name { font-size: 14px; flex: 1; }
+.konu-item.done .konu-name { color: var(–muted); text-decoration: line-through; }
+
+.konu-badge { font-size: 11px; padding: 3px 8px; border-radius: 99px; border: 1px solid var(–border); color: var(–muted); }
+.konu-item.done .konu-badge { background: rgba(34,211,164,.12); border-color: rgba(34,211,164,.3); color: var(–green); }
+
+/* DENEME ANALİZ */
+.deneme-container { max-width: 960px; margin: 0 auto; width: 100%; padding: 32px 24px; }
+
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.section-title { font-family: ‘Syne’, sans-serif; font-size: 18px; font-weight: 700; }
+
+.deneme-form-card {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 18px;
+padding: 28px;
+margin-bottom: 28px;
+}
+
+.form-title {
+font-family: ‘Syne’, sans-serif;
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+.form-grid .full { grid-column: 1 / -1; }
+
+.yanlis-section {
+margin-top: 4px;
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 14px;
+margin-bottom: 20px;
+}
+
+.yanlis-section-title {
+font-size: 12px;
+font-weight: 600;
+letter-spacing: .06em;
+text-transform: uppercase;
+color: var(–muted);
+margin-bottom: 12px;
+}
+
+.konu-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.konu-tag {
+padding: 5px 11px;
+border-radius: 99px;
+font-size: 12px;
+border: 1px solid var(–border);
+color: var(–muted);
+cursor: pointer;
+transition: all .15s;
+user-select: none;
+}
+
+.konu-tag.sel-tr  { background: rgba(79,142,255,.15);  border-color: var(–accent);  color: var(–accent);  }
+.konu-tag.sel-mat { background: rgba(245,200,66,.15);  border-color: var(–yellow);  color: var(–yellow);  }
+.konu-tag.sel-geo { background: rgba(124,92,252,.15);  border-color: var(–accent2); color: var(–accent2); }
+.konu-tag:hover { border-color: #555; color: var(–text); }
+
+.btn-add {
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+color: #fff;
+padding: 12px 28px;
+border-radius: 10px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+border: none;
+font-family: ‘DM Sans’, sans-serif;
+transition: all .18s;
+box-shadow: 0 6px 18px rgba(79,142,255,.28);
+}
+.btn-add:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(79,142,255,.38); }
+
+.btn-danger {
+background: rgba(244,84,106,.12);
+border: 1px solid rgba(244,84,106,.3);
+color: var(–red);
+padding: 6px 12px;
+border-radius: 6px;
+font-size: 12px;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: all .15s;
+}
+.btn-danger:hover { background: rgba(244,84,106,.2); }
+
+/* Tablo */
+.deneme-table-wrap {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 18px;
+overflow: hidden;
+}
+
+.deneme-table-scroll {
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+}
+
+table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+
+thead th {
+padding: 14px 16px;
+text-align: left;
+font-size: 11px;
+font-weight: 600;
+letter-spacing: .07em;
+text-transform: uppercase;
+color: var(–muted);
+background: var(–surface2);
+border-bottom: 1px solid var(–border);
+white-space: nowrap;
+}
+
+tbody tr { border-bottom: 1px solid var(–border); transition: background .12s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,.025); }
+
+tbody td { padding: 13px 16px; vertical-align: top; }
+
+tbody td.wrap-td { white-space: normal; min-width: 140px; max-width: 220px; }
+
+.net-badge { display: inline-block; padding: 3px 9px; border-radius: 6px; font-weight: 600; font-size: 12px; }
+.net-good { background: rgba(34,211,164,.12); color: var(–green);  border: 1px solid rgba(34,211,164,.25); }
+.net-mid  { background: rgba(245,200,66,.12);  color: var(–yellow); border: 1px solid rgba(245,200,66,.25);  }
+.net-bad  { background: rgba(244,84,106,.12);  color: var(–red);    border: 1px solid rgba(244,84,106,.25);  }
+
+.yanlis-konu-pill { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 11px; margin: 2px; }
+.pill-tr  { background: rgba(79,142,255,.18);  color: var(–accent);  }
+.pill-mat { background: rgba(245,200,66,.18);  color: var(–yellow);  }
+.pill-geo { background: rgba(124,92,252,.18);  color: var(–accent2); }
+
+.empty-state { text-align: center; padding: 60px 20px; color: var(–muted); }
+.empty-state .emoji { font-size: 42px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(18px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(–border); border-radius: 99px; }
+
+@media (max-width: 600px) {
+.dash-cards { grid-template-columns: 1fr; }
+.form-grid { grid-template-columns: 1fr; }
+.form-grid .full { grid-column: 1; }
+.app-topbar { padding: 14px 16px; }
+.konu-container, .deneme-container { padding: 20px 14px; }
+.login-card { padding: 36px 22px; }
+.dash-header h1 { font-size: 28px; }
+.progress-bar-wrap { flex-direction: column; align-items: flex-start; gap: 10px; }
+.progress-pct { min-width: unset; text-align: left; }
+.btn-add { width: 100%; }
+}
 </style>
-```
 
 </head>
 <body>
-    <!-- Üst Sol Köşe Dalgalar -->
-    <div class="wave-top-left"></div>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<!-- LOGIN -->
+
+<div class="page active" id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">DGS Takip</div>
+    <div class="login-sub">Dikey Geçiş Çalışma Paneli</div>
+    <label>Kullanıcı Adı</label>
+    <input type="text" id="loginUser" placeholder="kullanıcı adınız" autocomplete="off">
+    <label>Şifre</label>
+    <input type="password" id="loginPass" placeholder="••••••••">
+    <div class="login-err" id="loginErr">Kullanıcı adı veya şifre hatalı.</div>
+    <button class="btn-primary" onclick="doLogin()">Giriş Yap</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+
+<div class="page" id="dashPage">
+  <div class="dash-header">
+    <h1>Hoş Geldin 👋</h1>
+    <p>Ne yapmak istiyorsun?</p>
+  </div>
+  <div class="dash-cards">
+    <div class="dash-card konu" onclick="goTo('konu')">
+      <div class="dash-card-icon">📚</div>
+      <h2>Konu Takibi</h2>
+      <p>Türkçe, Matematik ve Geometri konularını takip et.</p>
+    </div>
+    <div class="dash-card deneme" onclick="goTo('deneme')">
+      <div class="dash-card-icon">📊</div>
+      <h2>Deneme Analizi</h2>
+      <p>Denemelerini kaydet ve gelişimini izle.</p>
+    </div>
+  </div>
+  <button class="logout-btn" onclick="logout()">← Çıkış Yap</button>
+</div>
+
+<!-- KONU TAKİP -->
+
+<div class="page" id="konuPage">
+  <div class="app-topbar">
+    <button class="back-btn" onclick="goTo('dash')">← Geri</button>
+    <div class="app-topbar-title">📚 Konu Takibi</div>
+  </div>
+  <div class="konu-container">
 
 ```
-<!-- Alt Sağ Köşe Dalgalar -->
-<div class="wave-bottom-right"></div>
+<div class="tab-bar">
+  <div class="tab active" onclick="switchDers('turkce', this)">Türkçe</div>
+  <div class="tab" onclick="switchDers('matematik', this)">Matematik</div>
+  <div class="tab" onclick="switchDers('geometri', this)">Geometri</div>
+</div>
 
-<!-- Ana İçerik -->
-<div class="container">
-    <!-- Logo -->
-    <div class="logo">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAAPoCAYAAABNF1TvAAAACXBIWXMAAC4jAAAuIwF4pT92AAAgAElEQVR4nOzdd3hUdd7+8XvSew+hhdBbKCJNQVARsGBBwYpdV1fXXbE3bOvaXX92dV3bqqiIBRARBRTpvffee++990ky8/sDJpIQyExCppzX67quXM5kznxmvskkc5/P+X48AAAAAAAAAADwU3XC3YBsf3YSq+U3VXNx9iX2MQAAAAAAAACwA/IwAAAAAAAAAAC/RgALAAAAAAAAAPBrBLAAAAAAAAAAAL9GAAsAAAAAAAAA8GsEsAAAAAAAAAAAvxYd7gYAAAAAAFA6SamWJcmj3R/tAQAAgL/i1QIAAAAAwE/UqeMJdxMAAADglwhgAQAAAAAAAAABx7l1EcACAAAAAAAAAPwaASwAAAAAAAAAwK8RwAIAAAAAAAAA/BoBLAAAAAAAAADArxHAAgAAAAAAAAD8GgEsAAAAAAAAAMCvEcACAAAAAAAAAPwaASwAAAAAAAAAwK8RwAIAAAAAAAAA/BoBLAAAAAAAAADArxHAAgAAAAAAAAD8GgEsAAAAAAAAAMCvEcACAAAAAAAAAPwaASwAAAAAAAAAwK8RwAIAAAAAAAAA/Fp0uBsAAAAAbM/gU+Nnk7sNAAAAgNMIYAEAAOB3UtdODHcTAAAAAH9CCCEAAAAAAAAAwK8RwAIAAAAAAAAA/BohBQAAAEAvtdadN4a7CQAAAAAQcgSwAAAAsM3S5ZPD3QQAAADAL3BmXYQQAgAAAAAAAADg5whgAQAAAAAAAAB+jRBCAAAA2KbVvDeHuwkAAACAXyCEEAAAAAAAAADg1whgAQAAAAAAAAB+jRACAAAAAAAAAIBfI4AFAAAAAAAAAPg1AlgAAAAAAAAAgF8jgAUAAAAAAAAA+DUCWAAAAAAAAACAXyOABQAAAAAAAAD4NQJYAAAAAAAAAIBfI4AFAAAAAAAAAPg1AlgAAAAAAAAAgF8jgAUAAAAAAAAA+LXocDcAAAAAfse6Y6DtMl9/dVJomgIAAAAAAYoAFgAAAIZ0u36AXR9xt12dUtMUAAAAACFDCCEAAAAAAAAAwK8RwAIAAAAAAAAA/BoBLAAAAAAAAADArxHAAgAAAAAAAAD8GgEsAAAAAAAAAMCvEcACAAAAAAAAAPwaASwAAAAAAAAAwK8RwAIAAAAAAAAA/BoBLAAAAAAAAADArxHAAgAAAAAAAAD8GgEsAAAAAAAAAMCvEcACAAAAAAAAAPwaASwAAAAAAAAAwK9Fh7sBAAAA8D87Nk52tFx6+qMh7SUAAAAABAIBLAAAAIq1feVrYW0H/M8tt40NdxOAaiU1Pj3cTQBqDKf26x3rz491u62+0hvwP5xZFyGEAAAAAAAAAAA/x1VfAACAgLBz1RvhbgKAashprxDPAQAAgLDgCiwAAAAAAAAAgF8jgAUAAAAAAAAA+DUCWAAAAAAAAACAXyOABQAAAAAAAAD4NQJYAAAAAAAAAIBfI4AFAAAAAAAAAPg1AlgAAAAAAAAAgF8jgAUAAAAAAAAA+DUCWAAAAAAAAACAXyOABQAAAAAAAAD4NQJYAAAAAAAAAIBfI4AFAAAAAAAAAPi16HA3AACsoUOH2i73/PPPa/z48SGpCwAAAAAAAP6HK7AAAAAAAAAAAL9GAAsAAAAAAAAA8GsEsAAAAAAAAAAAvxZaASy9+nK4mwEAAAC/kFjXSaBk/PnP39pnlxwvfS0AAODfot00kpAWFe4mAAAAAAAAAAA8Ygx0AAAAAAAAAAC/RgALAAAAAAAAAPBrBLAAAAAAAAAAAL9GAAsAAAAAAAAA8GsEsAAAAAAAAAAAvxYd7gYAQE2UaJmlJZL0bfZl9iUAAAAAgNqJABYAQsx2AGuR43t6AzUfASwAAAAA+5wMJSCEEAAAAAAAAADg17gCCwBCxEkAK7n7GowrsGoPrsACAAAAAP/EFVgAAAAAAAAAgF8jgAUAAAAAAAAA+DUCWAAAAAAAAACAXyOABQAAAAAAAAD4NQJYAAAAAAAAAIBfI4AFAAAAAAAAAPg1AlgAAAAAAAAAgF8jgAUAAAAAAAAA+DUCWAAAAAAAAACAXyOABQAAAAAAAAD4tehwNwAAaooeT4/r9xk/DwAAAAAAgMASUgEsvfpyeFsBALVOz1snhrsJAAAAABAmobVvxSO2Fw14bT8tOzLs0FQBAAAAAAAAALCNEJohBN/x2l0I4fqyJwLYnLXsIoYNVZtq+n5n1/btPgYAAAAAAAB+hCuwAAAAAAAAAAB+zYhrLwAAAAAAAAAAforrcwAAAAAAAAAAfo0AFgAAAAAAAADg1whgAQAAAAAAAAB+jQAWAAAAAAAAAODXCGABAAAAAAAAAH6NABYAfMzOTq7uFg6rQ/vaAAAAAACuSApNU4oyrvS2DW7e06CUdOdt3a9OO+gmAAAAAECtUzt6SgAAh5weL6SEtuumFbS2n9urYze8de3qNACo7W5+N/df+9Y3DhtuL3jq0rC0BwAAAACSI70ggAUAm4wEvMUKRShauO/fuf1PL/RLAAAAWJWI1wUAAAAgPBjVAAC7XIQPGrdBw27AujPTx2y3hQAWAAAAAACgNiCABQCbHPXfO+p797T/H/70tNvvM8WC1+z0sWy/B+BPbhr5Zs66n9w2tp99flcBLABUB4V7a2//p5Nt7AE4+Zu3u3+u3u4xg/37Z6rTvxsAAPzL12u9+l+pbd1n+20+WXTZu1f16/rW6cuj6yDnSC/80ePXhrsJAKqjSz6fVKCn+3/PXBPu5hXDz18MZDfZt/s31Oy1mE4CW+/DhZ2uwnEBVN18+dUJ4W4CUGv9a8p3Bepu/eW+sFVSZCnH+Tb/Pt0f69fn9rb/xp0+rt3Ae9EGl4LQTa/m3dvL3t8N3QMAAArb9J6zffdN7+V+kH/aO1f16/py7gfZ+9M3feDV/qC7y1z/m/FqHwAAAAAAgBCxN+4d4QLO7K/R+UNfY2wL/hbyV0lPeB4AIHzs91yVNGYSAGqXRg/9We4mAKiWXuy8IuN7Lv79k7SobP/TM77vIl+WcS9SzheaolzllZU6U09u+xwAAP7s0W+/LlA39c8Xhrk1TrH/M3T72e1ndxrOqv39hTbt/s24kxsAAAAAVFPGPP/dXHK5uKT2hb77jcvPuwyLdf51EqoGAAD8ByGEAAAAAACgmjAWQmj+VF4JgWaZYjVD3iQAQHCZ37MAAAAAwO/ZfsW7EDYA/s5+TlU+51AV4EYfGc/xPfO+tPP/hrsJAAAAAACgxuEKLAAAyrZ+8ssFfq6f8nIJ9QAAAACA2umLH88JdxMAAEHCFVgAgJB5/hfnZ/+co3dvAgAAAID//B/n3v4HAAAg3AhgAQAh80y3UQXqppw1JMytAQAAQG1w/5ybvfoQGr5fd/6DhBIA/sf1qHJuAAAAAKheTLbfA7BnU8rlBX5sMOvXJdQHAAAAAABAcHEFFgAAAABqgeabP/Lqo8z90/NZFwH6zs4vcj/Ivvziy8nhbg4AAACqhKuwAAAAAAAAAAC/xhVYAAgjJ1fO3N7ruNc6fv21nCu2eT8DAAAAAACgduMKLAAAXAhPACvaJAAAAACAxL5wqNgfxxg0f2pYtwUAqG24AgsAgCv1n7nYrzO53hy7AdGrHxS8+mr5ucPD0zgAAACg1vnw69PDWv/Cl68OTVMAoJoggAUAhI3TqbKcLuMmoE1OD71EtwEAAAAAANQeVVqrYGe7GudpAAAAAAAAAPBnob/8CQAAb7gy/R3nfgAAAAAAAPgDrsACAAAAAAAAAMv4/RcAoGwIYAEAVQ5npfOzEwAAAACAQDLaF2f/TUDj/w38XTjft2sLQggBAAAAAH7uT/+bmpH+X/Dl4+FuDQAAqKZYz44QenZwZ8v1b/jTnJDUAwAAAAA44Ym+D4a7CQAQMIQQAgAAAAAAAAD8GldgAQDVmuGpfjJmAAAAACi+r+X9lrZ37wPPDg5NEwAApSKABQAAAAB4zbwHqmb7BW++OjE0TQEAAECxvAsuTN0P2rW7QW4DWHvTq3H5FQAAfkA0BkB1tH7yhHD/CQCAI80fXZfnJ+e/43+d3VfcYyy9/Qq/f5Wd/E5X9o/9lD33TwAAgmHdxH8XqGs8y/3+Z/Ont5Ven0sAAEAxvAhgnezkeu+J+8/j78tz+lEAgD/a/tPT4W4CUK08+b0vc39w+nud/feue3/03NP2p0LTSvs4xy/c9t+wHJ43u+IOfv9zl/V6BACAd1zvE+ff97f+c+U15E0bUG15ur+ufcsZOT9/v66Beb/fVc8EaADAe65/wO21CQDsWjPh32Fu1UE8aQP8ypRD+4S7CQCA7By/p/v06Tsc8i/z5X17bbd1l9+z3WcXDhh2e94wfhsAAOycszf93F6vr1T0bP+du5h+c/O/0+7foZOvN+5eA+wv46RfDgCAXa7fo539Xhda2u7fZWn34T7M1S0n8+2XtD/j6i9e+VdbnXQNAAAhZLxvHQqY+ql5zv22rL/vuvfPee22XT/n0vM8vw+BtvTMs0LXIAAAbPjDfKM/7E+vPvNsj+uGpvk+ZOeN0fV7Ymm/q/u+y6J/B5/1Wp27f+e63//1vG04+QwAAKBqOPucu+if++NqSfPplvq74rrf3vG/QXev2eV+bv8dBN3Sg/p4/fvQ4rq/lbouAMAfhP7f9E79CAAAAIjF7EpIc2mBAOd+a//m9N9S7tcqu58b+JN/Lc7zlBf85fm9hT94qJT1Ov9w3++L9v8gLvh/LHtf/gul/u8q4Yusq/20ou8F+T+/67+3sv0euv89z+v+EACS3G3X6y6+O/hdK/7fz9L/jup9G9h/j/iw4Pus9/8hpPO1g78TxV/3u/yepGUjxvvLRvzvPt7/npVyf98CAHjiP/+3l8D++1dpf9s19f+WFrZk+t9ObC+z8L3jdB3PF/HjJ+xvlYf+T3/9/3+bm/3+ou/1+e/J+3cX2n9bTv/v6E+2/f+e87/byvuaU/r/Hf3p/z5z1w3u3o+h+h8NAOytg2+8W77/O3nXhSzlJ88ueeE/K+V9f/X+d0fz+yP//90K/x8z7/+HCv6fyt3/P0v6v6uj3//m8X/c4jj9v6S779Rw8n/fcLbD28/pCn02WXr9wv/vc7W9zq+vFr8P6uR3gfP/cxb/26C9/5sW/n98cT8X/T9n8T95+F9b6f//cv78l6T/W7r+vWjnud7+/y/U7G7f+f/u/+95/R+lyvpf6enw+O8Q++9v9n/nOf+/ZnH/A/WPz3l8Hf+y6MO+/ve/wq8j/rMu5c/7S4X/n+zq7671/hTd+P/tVv//45Xt/44V/P+Dq//z+sv/fd39n7b4/6PW+r8P/P+Gf6vp//9x9f/mUm/+/9MlPKfs/w94+5+CYr8v5DflL/7//wrsOsb7/2+U+f+VRVr/vL/+Ef7/v7fi/x/nL+u0qv5fQ0j+TxTS/w+5+h+Xq/8x+sv/JV39PzH/uubEjc+3LRBe+t3/S8P3PyZ//F+Z//5/p+rOTZj/I/3pt4l//ufC3/5L6j//2yn6/8aS/7dRvf+f5D/tp13Vr/r/w0e/f82y0u7j+e1r0e9VcqjQqxz/BwEAAAAAAACgKvnv//yL5V//6fPv//f64//ty6d6/T+4OP7/d+9IafW9/x9d8fdtBs//0yzt+/qy3z85/v+Eq//jlvf/wJX7/++K/X/Jvv8f2Ov3f/sf+x//w/pf8f/s93j+/2up2/3f+f+n/fT/mV7////Fy8W/J//t//L/uW9t9C1N/pbe//z+pf/2v+GK/LvY+c/xzf+Sq2D/p/ff/dxPq3+3/N/V1bql4q/spe7ruf++JU7Hf/9v7MX/FrP/12hT0f9j/d//sav//6mAdf/X7/q/hLP/HZX+/y87/3Mu+/8A//0fqZf/c/y/pf7J//7/pPL/vzbvf/or0v7S/g+0s7R2m9+rof/fScH//+b/H0Vpfxd5//+pu/7cxP/+bh39f9Lp/w1L+tv29v+UXn4eFMzf4P+4+p9xuf9/K/D/sRJ+Xy76f+Qv/q9b4v90//m/U/X+/57j/7/4x/+Hi/8/Qkn/Dy12v8DZ//+cPf+E/z+U8X9LN+1/+v/I2P+rSvs/o5f/F3Lzf7GC/z8v/H/u4v9P6PX/Cgs+/+D/Y4r+f87l/xJK+P+n+/+/uPy/Z3n+P1X8/wldNqzM/1e6+j+v89+lsv2fxf3/Gb39v7P3/xuy+7z//z/Y//zd+//7r/T/T0W+L+P/tK6/n+r9/+L//7+/9v/Xfvr/y/+X6r8fvv/edf+xnPX/n/9f+O1/bv/+n//v/PX/z//w/yb/+d9Pyf/7d/L/Vp///+fz7+oL/7/+Hf+vq9L/P/zzv/Jw//7/7rfu///B/x/ueu//Kv7V/8+sHv4n+n/6/t//Xf3j/+rVy//h/n/y/1X//y/8//38/4v//o///vj/c9X9/3t5/8/u/X+P//+N//3/q4r//++f/2H/n/9Bfvj/m9r/X/7h/z+L+vv/W6v6/3f+/z/U///f+v+r+v9Hmv//2+vf6f//1//Pq8//s6vg/0f9/3+d/v+qJP2/+dP/L6rn/y/C/P89f/+foP/8P+Hf/w/8/f/P1eD/j+HwP/fH/3Huf7Pq/f+70v//Vvb/i/6Ifv1/jv/81/2ffgf/7v8d1e9/FGGpW6v/1/rF/znq8/99p/9P98f/l/vN/8P99X+w//0/X+X8v8ov/o/55//Pq/3/Cf/9P/Xf/l/0+j+qfvN/6v/9P+Jf/+/53/8jS/v/c/j/ZxX+v5u//K/b+f+yq9//mJD/T9zTf/v///1/ven/lL/+P94//l/v//9DrMb/R5e93/m//7///w+pXf/rDcX/tf3q/1V+8X9qf/i/j7P/bdTM/5NW1f8oU//xf6DS/v9Ydf+P8s+/Z/f/ff71P99q8f/Nmv4//7r+fxlq9f8Rqvf/LgP9/+bq9r+T2vp/p2r5f5Ca+L+c6vh/jtr+/78a+D9iAIDwMb//svP7FTj//kbV/4+gNv1PpK78D6Z6/p8AABBs/EsYAAAAAOB3qs9Zbmunn3+3tIyf/f//RNb2P6Tc/uZzk38o8vM3y/6+YslP/U5t+v8s1vzvu7MX/1+sWf1K+P+r/9w/K/n/rDX+v/TXP/2Pw/n/1Vv++D//f/t+/e/k+X/+1qF83f/xdxYdr8P+v4l//Z8xhP//rvP/q2r//9ly+/8W3v9/qOj/hxj/5/H+/0OOL1x9/4fqzX+TXL3o/9g7e/38v7mz/+P65//fC/x/tuD7Mv7j/x3+z//+/Z//pf7yD//3z3qvvv9DqD7/K/wf+v//PfL//wGp9v8HL+n/5Mb//3fr+T/Ov/+Pbz97yv//7XL4/48r8/+L1fGO//5/5M7//yvw////KOW5f/q/dv7yX/+76eH/19Xxf7+l/d+v8P/hfvV/Oe+O/u/2P7v/82/v///A6n9v/tfy/+MS/1/k+v/Q0f/bHf4/LP3/bN69B/zj/+6+/B+hpv6fvTb8798vhL9Lf/j/fU39v2FZ/tdV0/9fVMf/T/ny/8Bq+X+uWvz/tRr/37Cm/L/TZSvv/A+3tvyfMrT/Xwz///XD0P6w/a+ssv8v5Qf/16+x/xevRv8Hrx7/O3D5v7Nq9D+BsP9/suC+QPj/t1wd/3fkd/9f8qv/29TK/wGH9/86teb/G/z/CwAAwE9wBRYAAAAAAAAA4NeqbgBLYAMf2v7T0+F7OgAAAAAAajXL3f8fwvZ/DQCAVSVG7FfOf3k0+FPo//+vq+N9f/x/t+v/hzt5DxTc/K/MZ/+39n9P9f+fq+v/g/r1//Z98H9JX7X/T++tL1b+q9j9l//4H6G3/2/z9j/2vu7/qev/fTr/3/t/Y1X+/0pfy29//Z+Vp/+JuX+/7J7/9r+66vL/J+/+V1J9/z/k3f+N/Pj/VlXzf1H+8n+Ysvj//0tD/b/G8h3/0f/sX6j+///p+/9pB///n/3z/zL+//+J+/9/XFXxv/56P/4f+39FX/s/orP/vxb+f2Fxr0ee/+9V+P/f1f7/8OWv/c+y9P9Lluf/RtX2/1Y14f8ANfV/I9Xz/zA15f9Rjv4f4+X/7Pwk/K2m/M/CW1Xy/4Yq+n/h/9n/uULxP6mq+v+7avZ/idr4P71q/v+12vQ/udr2v7rK/p/4O07+Z+/d/1j+j+ZoR8C3/xt27v+7/uu//49WO/9fV93/V1fb/ntX4P9NTv/X7+r/d+77b0N/+z//LH/5cV/ZXxe8/V/6Pw/s3O/T/4X/9/83//m/fP7/B8f+d///Sf/77/H//h2l/a+y8P///Pz/vf/+v7Vg+z/+Pz/7/5Z//2/Wv/8vXNzv8B//Hy37/2/u+O///w8p7Pcm//AvfqP/+//i2P+t1P+X/3//j/3l///b3Uv8P/+rf6T/Ev4v/n/5/4R//X/G1f+oS/n///98r3+v9/8LLP3/S1b/+f/zP/+/6+n/NZ7+F1Hy///++P+jyv//nvmLf/2f/Cf/+3/or/97Cc/93//Z/v3/gZ3XtPK1/7P//j/xX/9n/Ol3wt//i/V+//3/gqT/4//+/8P+x/8P+9//j/38/6z+81//q/f6/0vu//9f6lfPR/89T/4P+c//F4r/P+j//+f+4/9N7v7P6ORX+JP/qUf8z/+/P/t/5+/+z+d+/2R///d09n9Xd/93dfx/y/rG//dDzz//8S/Ou2P77/gv/2/43/+l/OP/q+6+j8qf/k/t+n9t//f/bh/8P/Tv/38LwP8V/eP/hv/7f1CtKj39/6Mk//H/x2K//+8//+r/4/7u/3+F/+9X8P+Fzo7Oi//le/o/w//+31P8/9sL/L/Q8f+Dy/s+kpP/Exb87yf7+//9/32l/z/i9/8j+tf/Yf79f/Nf/T/t+/03oXT/+b9r/l//pzzpvyb+4f/v/j/+D/f/6K0f/2cLzv/x/e//+b/8/yvxP/8f8J//Q3kKyO3+j+Lf/9//x/8vq8v//3/6P4k//e/In/6P4uR/HZb/fwf/+7+F/v//Dv/4P5Kn/+v6//+Y/f//S//+n7sr//z/3d//J+bt/0u9/T+Xt/+P9u7/9U7//7F6/Q/E4e8zyvvf/D/KT/+fHYT/Xf75/xK/+B+Ef/0P05v/XXj2f5P//3/03/4H4fL/MK//l+n9/8g9/Z/jf/+f9vt/h/s//9+1/PJ/f+7//1nR/x8H2u/+HQ8AsL
-
-    <!-- Marka İsmi -->
-    <div class="brand-name">TesisAnt</div>
-    <div class="subtitle">Sıhhi Ve Mekanik Tesisat</div>
-
-    <!-- Çok Yakında Kutusu -->
-    <div class="coming-soon">
-        <h1>Çok Yakında Hizmetinizdeyiz</h1>
-        <p>Yeni web sitemiz üzerinde çalışıyoruz. Size daha iyi hizmet verebilmek için hazırlanıyoruz!</p>
+<div class="progress-bar-wrap">
+  <div class="progress-info">
+    <h3 id="progressLabel">Türkçe İlerlemesi</h3>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
     </div>
+  </div>
+  <div class="progress-pct" id="progressPct">0%</div>
+</div>
 
-    <!-- İletişim Bilgileri -->
-    <div class="contact-info">
-        <div class="contact-item">
-            <div class="contact-icon">📞</div>
-            <div>+905325639323</div>
-        </div>
-        <div class="contact-item">
-            <div class="contact-icon">📧</div>
-            <div>kurumsal@tesisant.com</div>
-        </div>
-        <div class="contact-item">
-            <div class="contact-icon">🌐</div>
-            <div>www.tesisant.com</div>
-        </div>
-        <div class="contact-item">
-            <div class="contact-icon">📍</div>
-            <div>Kepez/Antalya</div>
-        </div>
-    </div>
+<!-- TÜRKÇE -->
+<div class="ders-panel active" id="panel-turkce">
+  <div class="konu-group">
+    <div class="konu-group-header">Sözcük Bilgisi</div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr1"><div class="konu-check">✓</div><div class="konu-name">Sözcükte Anlam (Gerçek, Mecaz, Yan)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr2"><div class="konu-check">✓</div><div class="konu-name">Deyimler ve Atasözleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr3"><div class="konu-check">✓</div><div class="konu-name">Eş Anlam – Zıt Anlam</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr4"><div class="konu-check">✓</div><div class="konu-name">Sözcükte Yapı (Kök, Ek, Türetme)</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Dil Bilgisi</div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr5"><div class="konu-check">✓</div><div class="konu-name">İsim (Ad) ve İsim Tamlamaları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr6"><div class="konu-check">✓</div><div class="konu-name">Sıfat ve Sıfat Tamlamaları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr7"><div class="konu-check">✓</div><div class="konu-name">Zamir (Adıl)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr8"><div class="konu-check">✓</div><div class="konu-name">Fiil (Eylem) Çekimi ve Zaman Ekleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr9"><div class="konu-check">✓</div><div class="konu-name">Fiilimsi: Sıfatfiil, Zarffiil, İsimfiil</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr10"><div class="konu-check">✓</div><div class="konu-name">Zarf ve Bağlaç</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr11"><div class="konu-check">✓</div><div class="konu-name">Edatlar (İlgeçler)</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Cümle Bilgisi</div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr12"><div class="konu-check">✓</div><div class="konu-name">Cümlenin Ögeleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr13"><div class="konu-check">✓</div><div class="konu-name">Cümle Türleri (Basit, Sıralı, Bağlı, Girişik)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr14"><div class="konu-check">✓</div><div class="konu-name">Paragraf ve Anlam</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr15"><div class="konu-check">✓</div><div class="konu-name">Noktalama İşaretleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr16"><div class="konu-check">✓</div><div class="konu-name">Yazım Kuralları (İmla)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr17"><div class="konu-check">✓</div><div class="konu-name">Anlatım Bozuklukları</div><div class="konu-badge">Konu</div></div>
+  </div>
+</div>
+
+<!-- MATEMATİK -->
+<div class="ders-panel" id="panel-matematik">
+  <div class="konu-group">
+    <div class="konu-group-header">Sayılar ve Temel İşlemler</div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat1"><div class="konu-check">✓</div><div class="konu-name">Sayı Basamakları ve Tam Sayılar</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat2"><div class="konu-check">✓</div><div class="konu-name">Bölme ve Bölünebilme Kuralları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat3"><div class="konu-check">✓</div><div class="konu-name">EBOB – EKOK</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat4"><div class="konu-check">✓</div><div class="konu-name">Kesirler ve Rasyonel Sayılar</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat5"><div class="konu-check">✓</div><div class="konu-name">Ondalık Sayılar</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat6"><div class="konu-check">✓</div><div class="konu-name">Üslü Sayılar ve Kökler</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Cebir</div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat7"><div class="konu-check">✓</div><div class="konu-name">Oran-Orantı</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat8"><div class="konu-check">✓</div><div class="konu-name">Yüzde Hesapları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat9"><div class="konu-check">✓</div><div class="konu-name">Denklemler (1. Derece)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat10"><div class="konu-check">✓</div><div class="konu-name">Denklem Sistemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat11"><div class="konu-check">✓</div><div class="konu-name">Eşitsizlikler</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat12"><div class="konu-check">✓</div><div class="konu-name">Mutlak Değer</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat13"><div class="konu-check">✓</div><div class="konu-name">Polinomlar ve Çarpanlara Ayırma</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Problem Türleri</div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat14"><div class="konu-check">✓</div><div class="konu-name">Hız – Mesafe – Zaman</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat15"><div class="konu-check">✓</div><div class="konu-name">İşçi ve Havuz Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat16"><div class="konu-check">✓</div><div class="konu-name">Yaş Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat17"><div class="konu-check">✓</div><div class="konu-name">Karışım Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat18"><div class="konu-check">✓</div><div class="konu-name">Kâr – Zarar – Vade</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Sayma ve Olasılık</div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat19"><div class="konu-check">✓</div><div class="konu-name">Permütasyon ve Kombinasyon</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat20"><div class="konu-check">✓</div><div class="konu-name">Olasılık</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat21"><div class="konu-check">✓</div><div class="konu-name">İstatistik (Ortalama, Medyan, Mod)</div><div class="konu-badge">Konu</div></div>
+  </div>
+</div>
+
+<!-- GEOMETRİ -->
+<div class="ders-panel" id="panel-geometri">
+  <div class="konu-group">
+    <div class="konu-group-header">Temel Kavramlar</div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo1"><div class="konu-check">✓</div><div class="konu-name">Nokta, Doğru, Düzlem</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo2"><div class="konu-check">✓</div><div class="konu-name">Açılar ve Açı Türleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo3"><div class="konu-check">✓</div><div class="konu-name">Paralel Doğrular ve Kesen Doğru</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Üçgenler</div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo4"><div class="konu-check">✓</div><div class="konu-name">Üçgende Açı ve Kenar Bağıntıları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo5"><div class="konu-check">✓</div><div class="konu-name">Üçgende Eşlik ve Benzerlik</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo6"><div class="konu-check">✓</div><div class="konu-name">Üçgende Alan Hesabı</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo7"><div class="konu-check">✓</div><div class="konu-name">Özel Üçgenler (İkizkenar, Eşkenar, Dik)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo8"><div class="konu-check">✓</div><div class="konu-name">Pisagor Bağıntısı</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo9"><div class="konu-check">✓</div><div class="konu-name">Üçgende Orta Nokta ve Ağırlık Merkezi</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Dörtgenler ve Çokgenler</div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo10"><div class="konu-check">✓</div><div class="konu-name">Dörtgen Türleri (Kare, Dikdörtgen, Paralelkenar)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo11"><div class="konu-check">✓</div><div class="konu-name">Yamuk ve Deltoid</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo12"><div class="konu-check">✓</div><div class="konu-name">Çokgenler ve Köşegen Sayısı</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Çember ve Daire</div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo13"><div class="konu-check">✓</div><div class="konu-name">Çemberde Açı ve Yay Bağıntıları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo14"><div class="konu-check">✓</div><div class="konu-name">Çemberde Teğet ve Kiriş</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo15"><div class="konu-check">✓</div><div class="konu-name">Daire Alanı ve Çevre</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Katı Cisimler</div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo16"><div class="konu-check">✓</div><div class="konu-name">Prizma (Küp ve Dikdörtgenler Prizması)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo17"><div class="konu-check">✓</div><div class="konu-name">Silindir, Koni, Küre</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo18"><div class="konu-check">✓</div><div class="konu-name">Piramit</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Analitik Geometri</div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo19"><div class="konu-check">✓</div><div class="konu-name">Koordinat Sistemi ve Nokta</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo20"><div class="konu-check">✓</div><div class="konu-name">Doğrunun Denklemi</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo21"><div class="konu-check">✓</div><div class="konu-name">Çemberin Denklemi</div><div class="konu-badge">Konu</div></div>
+  </div>
 </div>
 ```
+
+  </div>
+</div>
+
+<!-- DENEME ANALİZ -->
+
+<div class="page" id="denemePage">
+  <div class="app-topbar">
+    <button class="back-btn" onclick="goTo('dash')">← Geri</button>
+    <div class="app-topbar-title">📊 Deneme Analizi</div>
+  </div>
+
+  <div class="deneme-container">
+
+```
+<div class="deneme-form-card">
+  <div class="form-title">➕ Yeni Deneme Ekle</div>
+  <div class="form-grid">
+    <div>
+      <label>Tarih</label>
+      <input type="date" id="dTarih">
+    </div>
+    <div>
+      <label>Yayınevi / Deneme Adı</label>
+      <input type="text" id="dYayin" placeholder="ör. Palme, Tercih">
+    </div>
+
+    <div>
+      <label>Türkçe Doğru</label>
+      <input type="number" id="dTrD" min="0" max="40" placeholder="0">
+    </div>
+    <div>
+      <label>Türkçe Yanlış</label>
+      <input type="number" id="dTrY" min="0" max="40" placeholder="0">
+    </div>
+    <div class="full">
+      <div class="yanlis-section" id="trYanlisSection" style="display:none">
+        <div class="yanlis-section-title">📌 Türkçe Yanlışlarının Konuları</div>
+        <div class="konu-tags" id="trYanlisTags"></div>
+      </div>
+    </div>
+
+    <div>
+      <label>Matematik Doğru</label>
+      <input type="number" id="dMatD" min="0" max="40" placeholder="0">
+    </div>
+    <div>
+      <label>Matematik Yanlış</label>
+      <input type="number" id="dMatY" min="0" max="40" placeholder="0">
+    </div>
+    <div class="full">
+      <div class="yanlis-section" id="matYanlisSection" style="display:none">
+        <div class="yanlis-section-title">📌 Matematik Yanlışlarının Konuları</div>
+        <div class="konu-tags" id="matYanlisTags"></div>
+      </div>
+    </div>
+
+    <div>
+      <label>Geometri Doğru</label>
+      <input type="number" id="dGeoD" min="0" max="20" placeholder="0">
+    </div>
+    <div>
+      <label>Geometri Yanlış</label>
+      <input type="number" id="dGeoY" min="0" max="20" placeholder="0">
+    </div>
+    <div class="full">
+      <div class="yanlis-section" id="geoYanlisSection" style="display:none">
+        <div class="yanlis-section-title">📌 Geometri Yanlışlarının Konuları</div>
+        <div class="konu-tags" id="geoYanlisTags"></div>
+      </div>
+    </div>
+
+    <div class="full" style="margin-top:4px;">
+      <button class="btn-add" onclick="addDeneme()">Denemeyi Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<div class="section-header">
+  <div class="section-title">Tüm Denemeler</div>
+  <span id="denemeCount" style="color:var(--muted);font-size:13px;"></span>
+</div>
+
+<div class="deneme-table-wrap">
+  <div class="deneme-table-scroll">
+    <div id="denemeTableArea">
+      <div class="empty-state">
+        <div class="emoji">📝</div>
+        <p>Henüz deneme eklenmedi.<br>İlk denemenizi ekleyerek başlayın!</p>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<script>
+// AUTH
+const USERS = { "dgs2025": "sifre123" };
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginErr');
+  if (USERS[u] && USERS[u] === p) {
+    err.style.display = 'none';
+    loadFromStorage();
+    goTo('dash');
+  } else {
+    err.style.display = 'block';
+  }
+}
+
+document.getElementById('loginPass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+function logout() { goTo('login'); }
+
+// NAVIGATION
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const map = { login: 'loginPage', dash: 'dashPage', konu: 'konuPage', deneme: 'denemePage' };
+  document.getElementById(map[page]).classList.add('active');
+  if (page === 'konu') refreshProgress('turkce');
+  if (page === 'deneme') renderTable();
+}
+
+// STORAGE
+let state = { konular: {}, denemeler: [] };
+
+function saveToStorage() {
+  try { localStorage.setItem('dgs_state', JSON.stringify(state)); } catch(e) {}
+}
+
+function loadFromStorage() {
+  try {
+    const s = localStorage.getItem('dgs_state');
+    if (s) state = JSON.parse(s);
+    applyKonuState();
+    buildYanlisTags();
+  } catch(e) {}
+}
+
+// KONU TAKİP
+function applyKonuState() {
+  document.querySelectorAll('.konu-item').forEach(item => {
+    if (state.konular[item.dataset.id]) item.classList.add('done');
+    else item.classList.remove('done');
+  });
+}
+
+function toggleKonu(item, ders) {
+  const id = item.dataset.id;
+  if (state.konular[id]) { delete state.konular[id]; item.classList.remove('done'); }
+  else { state.konular[id] = true; item.classList.add('done'); }
+  saveToStorage();
+  refreshProgress(ders);
+}
+
+function switchDers(ders, tabEl) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.querySelectorAll('.ders-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + ders).classList.add('active');
+  refreshProgress(ders);
+}
+
+function refreshProgress(ders) {
+  const panel = document.getElementById('panel-' + ders);
+  const items = panel.querySelectorAll('.konu-item');
+  const done  = panel.querySelectorAll('.konu-item.done').length;
+  const pct   = items.length ? Math.round((done / items.length) * 100) : 0;
+  const labels = { turkce: 'Türkçe', matematik: 'Matematik', geometri: 'Geometri' };
+  document.getElementById('progressLabel').textContent = labels[ders] + ' İlerlemesi — ' + done + '/' + items.length;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+// DENEME ANALİZ
+const KONULAR = {
+  turkce:   ['Sözcükte Anlam','Deyimler & Atasözleri','Eş/Zıt Anlam','Sözcük Yapısı','İsim & Tamlama','Sıfat','Zamir','Fiil Çekimi','Fiilimsi','Zarf & Bağlaç','Edatlar','Cümle Ögeleri','Cümle Türleri','Paragraf','Noktalama','Yazım','Anlatım Bozukluğu'],
+  matematik: ['Sayı Basamakları','Bölünebilme','EBOB-EKOK','Kesirler','Ondalıklar','Üslü-Köklü','Oran-Orantı','Yüzde','1. Derece Denklem','Denklem Sistemi','Eşitsizlik','Mutlak Değer','Polinomlar','Hız-Mesafe-Zaman','İşçi-Havuz','Yaş','Karışım','Kâr-Zarar','Permütasyon-Kombinasyon','Olasılık','İstatistik'],
+  geometri:  ['Temel Kavramlar','Açılar','Paralel Doğrular','Üçgen Açı-Kenar','Üçgen Benzerlik','Üçgen Alan','Özel Üçgenler','Pisagor','Ağırlık Merkezi','Dörtgenler','Yamuk-Deltoid','Çokgenler','Çemberde Açı','Teğet-Kiriş','Daire Alan-Çevre','Prizma','Silindir-Koni-Küre','Piramit','Koordinat','Doğru Denklemi','Çember Denklemi']
+};
+
+let selectedYanlis = { tr: new Set(), mat: new Set(), geo: new Set() };
+
+function buildYanlisTags() {
+  buildTagsFor('tr',  'trYanlisTags',  'sel-tr',  KONULAR.turkce);
+  buildTagsFor('mat', 'matYanlisTags', 'sel-mat', KONULAR.matematik);
+  buildTagsFor('geo', 'geoYanlisTags', 'sel-geo', KONULAR.geometri);
+}
+
+function buildTagsFor(prefix, containerId, selClass, konular) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  konular.forEach(k => {
+    const tag = document.createElement('div');
+    tag.className = 'konu-tag' + (selectedYanlis[prefix].has(k) ? ' ' + selClass : '');
+    tag.textContent = k;
+    tag.onclick = () => {
+      if (selectedYanlis[prefix].has(k)) { selectedYanlis[prefix].delete(k); tag.classList.remove(selClass); }
+      else { selectedYanlis[prefix].add(k); tag.classList.add(selClass); }
+    };
+    c.appendChild(tag);
+  });
+}
+
+['dTrY','dMatY','dGeoY'].forEach((id, i) => {
+  const sectionIds = ['trYanlisSection','matYanlisSection','geoYanlisSection'];
+  document.getElementById(id).addEventListener('input', function() {
+    document.getElementById(sectionIds[i]).style.display = (parseInt(this.value) > 0) ? 'block' : 'none';
+  });
+});
+
+function addDeneme() {
+  const tarih = document.getElementById('dTarih').value;
+  const yayin = document.getElementById('dYayin').value.trim();
+  const trD   = parseInt(document.getElementById('dTrD').value)  || 0;
+  const trY   = parseInt(document.getElementById('dTrY').value)  || 0;
+  const matD  = parseInt(document.getElementById('dMatD').value) || 0;
+  const matY  = parseInt(document.getElementById('dMatY').value) || 0;
+  const geoD  = parseInt(document.getElementById('dGeoD').value) || 0;
+  const geoY  = parseInt(document.getElementById('dGeoY').value) || 0;
+
+  if (!tarih || !yayin) { alert('Tarih ve yayınevi alanları zorunludur.'); return; }
+
+  state.denemeler.unshift({
+    id: Date.now(), tarih, yayin,
+    trD, trY, trKonular: [...selectedYanlis.tr],
+    matD, matY, matKonular: [...selectedYanlis.mat],
+    geoD, geoY, geoKonular: [...selectedYanlis.geo]
+  });
+  saveToStorage();
+
+  ['dTarih','dYayin','dTrD','dTrY','dMatD','dMatY','dGeoD','dGeoY'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  ['trYanlisSection','matYanlisSection','geoYanlisSection'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  selectedYanlis = { tr: new Set(), mat: new Set(), geo: new Set() };
+  buildYanlisTags();
+  renderTable();
+}
+
+function deleteDeneme(id) {
+  if (!confirm('Bu denemeyi silmek istediğinizden emin misiniz?')) return;
+  state.denemeler = state.denemeler.filter(d => d.id !== id);
+  saveToStorage();
+  renderTable();
+}
+
+function net(d, y) { return (d - y / 4).toFixed(2); }
+
+function netClass(n) {
+  if (n >= 20) return 'net-good';
+  if (n >= 10) return 'net-mid';
+  return 'net-bad';
+}
+
+function formatDate(s) {
+  if (!s) return '-';
+  const [y,m,d] = s.split('-');
+  return `${d}.${m}.${y}`;
+}
+
+function pills(konular, cls) {
+  if (!konular || konular.length === 0) return '<span style="color:var(--muted);font-size:11px;">—</span>';
+  return konular.map(k => `<span class="yanlis-konu-pill ${cls}">${k}</span>`).join('');
+}
+
+function renderTable() {
+  const area  = document.getElementById('denemeTableArea');
+  const count = document.getElementById('denemeCount');
+
+  if (state.denemeler.length === 0) {
+    count.textContent = '';
+    area.innerHTML = `<div class="empty-state"><div class="emoji">📝</div><p>Henüz deneme eklenmedi.<br>İlk denemenizi ekleyerek başlayın!</p></div>`;
+    return;
+  }
+
+  count.textContent = state.denemeler.length + ' deneme';
+
+  let html = `<table>
+    <thead><tr>
+      <th>Tarih</th><th>Yayınevi</th>
+      <th>Türkçe D/Y</th><th>Tr Net</th><th>Tr Yanlış Konuları</th>
+      <th>Mat D/Y</th><th>Mat Net</th><th>Mat Yanlış Konuları</th>
+      <th>Geo D/Y</th><th>Geo Net</th><th>Geo Yanlış Konuları</th>
+      <th>Toplam Net</th><th></th>
+    </tr></thead><tbody>`;
+
+  state.denemeler.forEach(d => {
+    const trNet  = parseFloat(net(d.trD, d.trY));
+    const matNet = parseFloat(net(d.matD, d.matY));
+    const geoNet = parseFloat(net(d.geoD, d.geoY));
+    const topNet = (trNet + matNet + geoNet).toFixed(2);
+    html += `<tr>
+      <td>${formatDate(d.tarih)}</td>
+      <td style="font-weight:500">${d.yayin}</td>
+      <td>${d.trD} / <span style="color:var(--red)">${d.trY}</span></td>
+      <td><span class="net-badge ${netClass(trNet)}">${trNet}</span></td>
+      <td class="wrap-td">${pills(d.trKonular, 'pill-tr')}</td>
+      <td>${d.matD} / <span style="color:var(--red)">${d.matY}</span></td>
+      <td><span class="net-badge ${netClass(matNet)}">${matNet}</span></td>
+      <td class="wrap-td">${pills(d.matKonular, 'pill-mat')}</td>
+      <td>${d.geoD} / <span style="color:var(--red)">${d.geoY}</span></td>
+      <td><span class="net-badge ${netClass(geoNet)}">${geoNet}</span></td>
+      <td class="wrap-td">${pills(d.geoKonular, 'pill-geo')}</td>
+      <td><span class="net-badge ${netClass(parseFloat(topNet))}" style="font-size:13px">${topNet}</span></td>
+      <td><button class="btn-danger" onclick="deleteDeneme(${d.id})">Sil</button></td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  area.innerHTML = html;
+}
+
+// Init
+buildYanlisTags();
+</script>
 
 </body>
 </html>
