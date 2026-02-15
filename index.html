@@ -591,7 +591,122 @@
     .btn-add { width: 100%; }
   }
 
-  /* AYLIK PROGRAM */
+  /* SORU DAĞILIMI BUTONU & MODAL */
+  .btn-dagılım {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all .18s;
+    margin-bottom: 24px;
+    width: 100%;
+    justify-content: center;
+  }
+  .btn-dagılım:hover { border-color: var(--accent); color: var(--accent); background: rgba(79,142,255,.06); }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    z-index: 1000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 860px;
+    margin: auto;
+    overflow: hidden;
+    animation: fadeUp .3s ease both;
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .modal-header h2 { font-size: 16px; font-weight: 700; }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: color .15s;
+  }
+  .modal-close:hover { color: var(--text); }
+
+  .modal-body { padding: 20px 24px; overflow-x: auto; }
+
+  .dagılım-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+
+  .dagılım-table th {
+    padding: 10px 12px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #c0392b;
+    border: 1px solid rgba(255,255,255,.15);
+    white-space: nowrap;
+  }
+
+  .dagılım-table th:first-child { text-align: left; min-width: 160px; }
+
+  .dagılım-table td {
+    padding: 9px 12px;
+    text-align: center;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .dagılım-table td:first-child { text-align: left; color: var(--text); font-weight: 500; }
+
+  .dagılım-table tbody tr:nth-child(odd)  { background: var(--surface2); }
+  .dagılım-table tbody tr:nth-child(even) { background: var(--surface); }
+  .dagılım-table tbody tr:hover { background: rgba(79,142,255,.07); }
+
+  .dagılım-table tr.toplam-row td {
+    background: #c0392b;
+    color: #fff;
+    font-weight: 700;
+    border-color: rgba(255,255,255,.15);
+  }
+
+  .dagılım-table td.sifir { color: var(--muted); }
+
+  @media (max-width: 600px) {
+    .modal-body { padding: 14px; }
+    .modal-header { padding: 16px; }
+  }
 
   .dash-card.program::before { background: linear-gradient(90deg, var(--yellow), var(--green)); }
 
@@ -760,8 +875,8 @@
 
 <div class="page active" id="loginPage">
   <div class="login-card">
-    <div class="login-logo">MERVAN7</div>
-    <div class="login-sub">Dikey Geçiş Sınavı Çalışma Paneli</div>
+    <div class="login-logo">DGS Takip</div>
+    <div class="login-sub">Dikey Geçiş Çalışma Paneli</div>
     <label>Kullanıcı Adı</label>
     <input type="text" id="loginUser" placeholder="kullanıcı adınız" autocomplete="off">
     <label>Şifre</label>
@@ -878,113 +993,131 @@
   <div class="progress-pct" id="progressPct">0%</div>
 </div>
 
+<button class="btn-dagılım" id="btnDagilim" onclick="openDagilim()">📊 Soru Dağılımları</button>
+
 <!-- TÜRKÇE -->
 <div class="ders-panel active" id="panel-turkce">
   <div class="konu-group">
     <div class="konu-group-header">Sözcük Bilgisi</div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr1"><div class="konu-check">✓</div><div class="konu-name">Sözcükte Anlam (Gerçek, Mecaz, Yan)</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr2"><div class="konu-check">✓</div><div class="konu-name">Deyimler ve Atasözleri</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr3"><div class="konu-check">✓</div><div class="konu-name">Eş Anlam – Zıt Anlam</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr4"><div class="konu-check">✓</div><div class="konu-name">Sözcükte Yapı (Kök, Ek, Türetme)</div><div class="konu-badge">Konu</div></div>
-  </div>
-  <div class="konu-group">
-    <div class="konu-group-header">Dil Bilgisi</div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr5"><div class="konu-check">✓</div><div class="konu-name">İsim (Ad) ve İsim Tamlamaları</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr6"><div class="konu-check">✓</div><div class="konu-name">Sıfat ve Sıfat Tamlamaları</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr7"><div class="konu-check">✓</div><div class="konu-name">Zamir (Adıl)</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr8"><div class="konu-check">✓</div><div class="konu-name">Fiil (Eylem) Çekimi ve Zaman Ekleri</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr9"><div class="konu-check">✓</div><div class="konu-name">Fiilimsi: Sıfatfiil, Zarffiil, İsimfiil</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr10"><div class="konu-check">✓</div><div class="konu-name">Zarf ve Bağlaç</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr11"><div class="konu-check">✓</div><div class="konu-name">Edatlar (İlgeçler)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr1"><div class="konu-check">✓</div><div class="konu-name">Sözcükte Anlam</div><div class="konu-badge">Konu</div></div>
   </div>
   <div class="konu-group">
     <div class="konu-group-header">Cümle Bilgisi</div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr12"><div class="konu-check">✓</div><div class="konu-name">Cümlenin Ögeleri</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr13"><div class="konu-check">✓</div><div class="konu-name">Cümle Türleri (Basit, Sıralı, Bağlı, Girişik)</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr14"><div class="konu-check">✓</div><div class="konu-name">Paragraf ve Anlam</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr15"><div class="konu-check">✓</div><div class="konu-name">Noktalama İşaretleri</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr16"><div class="konu-check">✓</div><div class="konu-name">Yazım Kuralları (İmla)</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr17"><div class="konu-check">✓</div><div class="konu-name">Anlatım Bozuklukları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr2"><div class="konu-check">✓</div><div class="konu-name">Cümlede Anlam</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Paragraf</div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr3"><div class="konu-check">✓</div><div class="konu-name">Paragrafta Anlam</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Anlatım</div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr4"><div class="konu-check">✓</div><div class="konu-name">Anlatım Biçimleri ve Düşünceyi Geliştirme Yolları</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Sözel Mantık</div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr5"><div class="konu-check">✓</div><div class="konu-name">Sıralama Soruları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr6"><div class="konu-check">✓</div><div class="konu-name">Yer-Konum Bildiren Sorular</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr7"><div class="konu-check">✓</div><div class="konu-name">Yer-Yön Bildiren Sorular</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr8"><div class="konu-check">✓</div><div class="konu-name">Özne-Nesne İlişkili Sorular</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'turkce')" data-id="tr9"><div class="konu-check">✓</div><div class="konu-name">Tablo Yorumlama Soruları</div><div class="konu-badge">Konu</div></div>
   </div>
 </div>
 
 <!-- MATEMATİK -->
 <div class="ders-panel" id="panel-matematik">
   <div class="konu-group">
-    <div class="konu-group-header">Sayılar ve Temel İşlemler</div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat1"><div class="konu-check">✓</div><div class="konu-name">Sayı Basamakları ve Tam Sayılar</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat2"><div class="konu-check">✓</div><div class="konu-name">Bölme ve Bölünebilme Kuralları</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat3"><div class="konu-check">✓</div><div class="konu-name">EBOB – EKOK</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat4"><div class="konu-check">✓</div><div class="konu-name">Kesirler ve Rasyonel Sayılar</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat5"><div class="konu-check">✓</div><div class="konu-name">Ondalık Sayılar</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat6"><div class="konu-check">✓</div><div class="konu-name">Üslü Sayılar ve Kökler</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-group-header">Temel Kavramlar (Sayılar)</div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat1"><div class="konu-check">✓</div><div class="konu-name">Sayı Basamakları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat2"><div class="konu-check">✓</div><div class="konu-name">Bölme-Bölünebilme</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat3"><div class="konu-check">✓</div><div class="konu-name">OBEB-OKEK</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat4"><div class="konu-check">✓</div><div class="konu-name">Rasyonel Sayılar</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat5"><div class="konu-check">✓</div><div class="konu-name">Basit Eşitsizlikler</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat6"><div class="konu-check">✓</div><div class="konu-name">Mutlak Değer</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat7"><div class="konu-check">✓</div><div class="konu-name">Üslü Sayılar</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat8"><div class="konu-check">✓</div><div class="konu-name">Köklü Sayılar</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat9"><div class="konu-check">✓</div><div class="konu-name">Çarpanlara Ayırma</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat10"><div class="konu-check">✓</div><div class="konu-name">Oran-Orantı</div><div class="konu-badge">Konu</div></div>
   </div>
   <div class="konu-group">
-    <div class="konu-group-header">Cebir</div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat7"><div class="konu-check">✓</div><div class="konu-name">Oran-Orantı</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat8"><div class="konu-check">✓</div><div class="konu-name">Yüzde Hesapları</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat9"><div class="konu-check">✓</div><div class="konu-name">Denklemler (1. Derece)</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat10"><div class="konu-check">✓</div><div class="konu-name">Denklem Sistemleri</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat11"><div class="konu-check">✓</div><div class="konu-name">Eşitsizlikler</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat12"><div class="konu-check">✓</div><div class="konu-name">Mutlak Değer</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat13"><div class="konu-check">✓</div><div class="konu-name">Polinomlar ve Çarpanlara Ayırma</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-group-header">Problemler</div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat11"><div class="konu-check">✓</div><div class="konu-name">Sayı Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat12"><div class="konu-check">✓</div><div class="konu-name">Kesir Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat13"><div class="konu-check">✓</div><div class="konu-name">İşçi-Havuz Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat14"><div class="konu-check">✓</div><div class="konu-name">Yaş Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat15"><div class="konu-check">✓</div><div class="konu-name">Yüzde Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat16"><div class="konu-check">✓</div><div class="konu-name">Kar-Zarar Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat17"><div class="konu-check">✓</div><div class="konu-name">Tablo-Grafik Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat18"><div class="konu-check">✓</div><div class="konu-name">Hız Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat19"><div class="konu-check">✓</div><div class="konu-name">Karışım Problemleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat20"><div class="konu-check">✓</div><div class="konu-name">Hareket Problemleri</div><div class="konu-badge">Konu</div></div>
   </div>
   <div class="konu-group">
-    <div class="konu-group-header">Problem Türleri</div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat14"><div class="konu-check">✓</div><div class="konu-name">Hız – Mesafe – Zaman</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat15"><div class="konu-check">✓</div><div class="konu-name">İşçi ve Havuz Problemleri</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat16"><div class="konu-check">✓</div><div class="konu-name">Yaş Problemleri</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat17"><div class="konu-check">✓</div><div class="konu-name">Karışım Problemleri</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat18"><div class="konu-check">✓</div><div class="konu-name">Kâr – Zarar – Vade</div><div class="konu-badge">Konu</div></div>
-  </div>
-  <div class="konu-group">
-    <div class="konu-group-header">Sayma ve Olasılık</div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat19"><div class="konu-check">✓</div><div class="konu-name">Permütasyon ve Kombinasyon</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat20"><div class="konu-check">✓</div><div class="konu-name">Olasılık</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat21"><div class="konu-check">✓</div><div class="konu-name">İstatistik (Ortalama, Medyan, Mod)</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-group-header">Diğer Konular</div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat21"><div class="konu-check">✓</div><div class="konu-name">Kümeler</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat22"><div class="konu-check">✓</div><div class="konu-name">Fonksiyon</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat23"><div class="konu-check">✓</div><div class="konu-name">İşlem</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat24"><div class="konu-check">✓</div><div class="konu-name">Diziler</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat25"><div class="konu-check">✓</div><div class="konu-name">Permütasyon</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat26"><div class="konu-check">✓</div><div class="konu-name">Kombinasyon</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat27"><div class="konu-check">✓</div><div class="konu-name">Olasılık</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat28"><div class="konu-check">✓</div><div class="konu-name">Tablo ve Grafik Yorumlama</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat29"><div class="konu-check">✓</div><div class="konu-name">Sayısal Mantık</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat30"><div class="konu-check">✓</div><div class="konu-name">Logaritma</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'matematik')" data-id="mat31"><div class="konu-check">✓</div><div class="konu-name">Limit ve Türev</div><div class="konu-badge">Konu</div></div>
   </div>
 </div>
 
 <!-- GEOMETRİ -->
 <div class="ders-panel" id="panel-geometri">
   <div class="konu-group">
-    <div class="konu-group-header">Temel Kavramlar</div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo1"><div class="konu-check">✓</div><div class="konu-name">Nokta, Doğru, Düzlem</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo2"><div class="konu-check">✓</div><div class="konu-name">Açılar ve Açı Türleri</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo3"><div class="konu-check">✓</div><div class="konu-name">Paralel Doğrular ve Kesen Doğru</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-group-header">Açılar ve Üçgenler</div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo1"><div class="konu-check">✓</div><div class="konu-name">Geometrik Kavramlar</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo2"><div class="konu-check">✓</div><div class="konu-name">Açılar</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo3"><div class="konu-check">✓</div><div class="konu-name">Üçgenler</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo4"><div class="konu-check">✓</div><div class="konu-name">Üçgen Çeşitleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo5"><div class="konu-check">✓</div><div class="konu-name">Açıortay</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo6"><div class="konu-check">✓</div><div class="konu-name">Kenarortay</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo7"><div class="konu-check">✓</div><div class="konu-name">Pisagor Teoremi</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo8"><div class="konu-check">✓</div><div class="konu-name">Öklid Bağıntıları</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo9"><div class="konu-check">✓</div><div class="konu-name">Üçgende Açıortay Teoremleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo10"><div class="konu-check">✓</div><div class="konu-name">Üçgende Kenarortay Teoremleri</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo11"><div class="konu-check">✓</div><div class="konu-name">Üçgende Alan</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo12"><div class="konu-check">✓</div><div class="konu-name">Üçgende Benzerlik</div><div class="konu-badge">Konu</div></div>
   </div>
   <div class="konu-group">
-    <div class="konu-group-header">Üçgenler</div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo4"><div class="konu-check">✓</div><div class="konu-name">Üçgende Açı ve Kenar Bağıntıları</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo5"><div class="konu-check">✓</div><div class="konu-name">Üçgende Eşlik ve Benzerlik</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo6"><div class="konu-check">✓</div><div class="konu-name">Üçgende Alan Hesabı</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo7"><div class="konu-check">✓</div><div class="konu-name">Özel Üçgenler (İkizkenar, Eşkenar, Dik)</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo8"><div class="konu-check">✓</div><div class="konu-name">Pisagor Bağıntısı</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo9"><div class="konu-check">✓</div><div class="konu-name">Üçgende Orta Nokta ve Ağırlık Merkezi</div><div class="konu-badge">Konu</div></div>
-  </div>
-  <div class="konu-group">
-    <div class="konu-group-header">Dörtgenler ve Çokgenler</div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo10"><div class="konu-check">✓</div><div class="konu-name">Dörtgen Türleri (Kare, Dikdörtgen, Paralelkenar)</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo11"><div class="konu-check">✓</div><div class="konu-name">Yamuk ve Deltoid</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo12"><div class="konu-check">✓</div><div class="konu-name">Çokgenler ve Köşegen Sayısı</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-group-header">Çokgenler ve Dörtgenler</div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo13"><div class="konu-check">✓</div><div class="konu-name">Çokgenler</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo14"><div class="konu-check">✓</div><div class="konu-name">Dörtgenler</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo15"><div class="konu-check">✓</div><div class="konu-name">Paralelkenar</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo16"><div class="konu-check">✓</div><div class="konu-name">Dikdörtgen</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo17"><div class="konu-check">✓</div><div class="konu-name">Kare</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo18"><div class="konu-check">✓</div><div class="konu-name">Yamuk</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo19"><div class="konu-check">✓</div><div class="konu-name">Deltoid</div><div class="konu-badge">Konu</div></div>
   </div>
   <div class="konu-group">
     <div class="konu-group-header">Çember ve Daire</div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo13"><div class="konu-check">✓</div><div class="konu-name">Çemberde Açı ve Yay Bağıntıları</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo14"><div class="konu-check">✓</div><div class="konu-name">Çemberde Teğet ve Kiriş</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo15"><div class="konu-check">✓</div><div class="konu-name">Daire Alanı ve Çevre</div><div class="konu-badge">Konu</div></div>
-  </div>
-  <div class="konu-group">
-    <div class="konu-group-header">Katı Cisimler</div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo16"><div class="konu-check">✓</div><div class="konu-name">Prizma (Küp ve Dikdörtgenler Prizması)</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo17"><div class="konu-check">✓</div><div class="konu-name">Silindir, Koni, Küre</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo18"><div class="konu-check">✓</div><div class="konu-name">Piramit</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo20"><div class="konu-check">✓</div><div class="konu-name">Çemberde Açı</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo21"><div class="konu-check">✓</div><div class="konu-name">Çemberde Uzunluk</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo22"><div class="konu-check">✓</div><div class="konu-name">Dairede Alan</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo23"><div class="konu-check">✓</div><div class="konu-name">Çemberde Benzerlik</div><div class="konu-badge">Konu</div></div>
   </div>
   <div class="konu-group">
     <div class="konu-group-header">Analitik Geometri</div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo19"><div class="konu-check">✓</div><div class="konu-name">Koordinat Sistemi ve Nokta</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo20"><div class="konu-check">✓</div><div class="konu-name">Doğrunun Denklemi</div><div class="konu-badge">Konu</div></div>
-    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo21"><div class="konu-check">✓</div><div class="konu-name">Çemberin Denklemi</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo24"><div class="konu-check">✓</div><div class="konu-name">Noktanın Analitik İncelenmesi</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo25"><div class="konu-check">✓</div><div class="konu-name">Analitik Düzlem</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo26"><div class="konu-check">✓</div><div class="konu-name">Doğrunun Denklemleri</div><div class="konu-badge">Konu</div></div>
+  </div>
+  <div class="konu-group">
+    <div class="konu-group-header">Katı Cisimler</div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo27"><div class="konu-check">✓</div><div class="konu-name">Prizma</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo28"><div class="konu-check">✓</div><div class="konu-name">Dikdörtgenler Prizması</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo29"><div class="konu-check">✓</div><div class="konu-name">Küp</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo30"><div class="konu-check">✓</div><div class="konu-name">Silindir</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo31"><div class="konu-check">✓</div><div class="konu-name">Dönel Silindir</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo32"><div class="konu-check">✓</div><div class="konu-name">Piramit</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo33"><div class="konu-check">✓</div><div class="konu-name">Düzgün Piramit</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo34"><div class="konu-check">✓</div><div class="konu-name">Kesik Piramit</div><div class="konu-badge">Konu</div></div>
+    <div class="konu-item" onclick="toggleKonu(this,'geometri')" data-id="geo35"><div class="konu-check">✓</div><div class="konu-name">Küre</div><div class="konu-badge">Konu</div></div>
   </div>
 </div>
 ```
@@ -1114,7 +1247,7 @@ function goTo(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const map = { login: 'loginPage', dash: 'dashPage', konu: 'konuPage', deneme: 'denemePage', program: 'programPage' };
   document.getElementById(map[page]).classList.add('active');
-  if (page === 'konu') refreshProgress('turkce');
+  if (page === 'konu') { aktifDers = 'turkce'; refreshProgress('turkce'); }
   if (page === 'deneme') renderTable();
   if (page === 'program') renderAyPanel('subat');
 }
@@ -1138,6 +1271,26 @@ function loadFromStorage() {
   } catch(e) {}
 }
 
+// SORU DAĞILIMI MODAL
+let aktifDers = 'turkce';
+
+function openDagilim() {
+  const modalMap = { turkce: 'modalTurkce', matematik: 'modalMatematik', geometri: 'modalGeometri' };
+  document.getElementById(modalMap[aktifDers]).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', function(e) {
+    if (e.target === this) closeModal(this.id);
+  });
+});
+
 // KONU TAKİP
 function applyKonuState() {
   document.querySelectorAll('.konu-item').forEach(item => {
@@ -1155,6 +1308,7 @@ function toggleKonu(item, ders) {
 }
 
 function switchDers(ders, tabEl) {
+  aktifDers = ders;
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   tabEl.classList.add('active');
   document.querySelectorAll('.ders-panel').forEach(p => p.classList.remove('active'));
@@ -1286,9 +1440,9 @@ function silHedef(ay, kat, idx) {
 
 // DENEME ANALİZ
 const KONULAR = {
-  turkce:   ['Sözcükte Anlam','Deyimler & Atasözleri','Eş/Zıt Anlam','Sözcük Yapısı','İsim & Tamlama','Sıfat','Zamir','Fiil Çekimi','Fiilimsi','Zarf & Bağlaç','Edatlar','Cümle Ögeleri','Cümle Türleri','Paragraf','Noktalama','Yazım','Anlatım Bozukluğu'],
-  matematik: ['Sayı Basamakları','Bölünebilme','EBOB-EKOK','Kesirler','Ondalıklar','Üslü-Köklü','Oran-Orantı','Yüzde','1. Derece Denklem','Denklem Sistemi','Eşitsizlik','Mutlak Değer','Polinomlar','Hız-Mesafe-Zaman','İşçi-Havuz','Yaş','Karışım','Kâr-Zarar','Permütasyon-Kombinasyon','Olasılık','İstatistik'],
-  geometri:  ['Temel Kavramlar','Açılar','Paralel Doğrular','Üçgen Açı-Kenar','Üçgen Benzerlik','Üçgen Alan','Özel Üçgenler','Pisagor','Ağırlık Merkezi','Dörtgenler','Yamuk-Deltoid','Çokgenler','Çemberde Açı','Teğet-Kiriş','Daire Alan-Çevre','Prizma','Silindir-Koni-Küre','Piramit','Koordinat','Doğru Denklemi','Çember Denklemi']
+  turkce:   ['Sözcükte Anlam','Cümlede Anlam','Paragrafta Anlam','Anlatım Biçimleri ve Düşünceyi Geliştirme Yolları','Sıralama Soruları','Yer-Konum Bildiren Sorular','Yer-Yön Bildiren Sorular','Özne-Nesne İlişkili Sorular','Tablo Yorumlama Soruları'],
+  matematik: ['Sayı Basamakları','Bölme-Bölünebilme','OBEB-OKEK','Rasyonel Sayılar','Basit Eşitsizlikler','Mutlak Değer','Üslü Sayılar','Köklü Sayılar','Çarpanlara Ayırma','Oran-Orantı','Sayı Problemleri','Kesir Problemleri','İşçi-Havuz Problemleri','Yaş Problemleri','Yüzde Problemleri','Kar-Zarar Problemleri','Tablo-Grafik Problemleri','Hız Problemleri','Karışım Problemleri','Hareket Problemleri','Kümeler','Fonksiyon','İşlem','Diziler','Permütasyon','Kombinasyon','Olasılık','Tablo ve Grafik Yorumlama','Sayısal Mantık','Logaritma','Limit ve Türev'],
+  geometri:  ['Geometrik Kavramlar','Açılar','Üçgenler','Üçgen Çeşitleri','Açıortay','Kenarortay','Pisagor Teoremi','Öklid Bağıntıları','Üçgende Açıortay Teoremleri','Üçgende Kenarortay Teoremleri','Üçgende Alan','Üçgende Benzerlik','Çokgenler','Dörtgenler','Paralelkenar','Dikdörtgen','Kare','Yamuk','Deltoid','Çemberde Açı','Çemberde Uzunluk','Dairede Alan','Çemberde Benzerlik','Noktanın Analitik İncelenmesi','Analitik Düzlem','Doğrunun Denklemleri','Prizma','Dikdörtgenler Prizması','Küp','Silindir','Dönel Silindir','Piramit','Düzgün Piramit','Kesik Piramit','Küre']
 };
 
 let selectedYanlis = { tr: new Set(), mat: new Set(), geo: new Set() };
@@ -1458,6 +1612,116 @@ setInterval(updateCountdown, 1000);
 // Init
 buildYanlisTags();
 </script>
+
+<!-- MODAL: TÜRKÇE SORU DAĞILIMI -->
+
+<div class="modal-overlay" id="modalTurkce">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>📊 DGS Türkçe Soru Dağılımı</h2>
+      <button class="modal-close" onclick="closeModal('modalTurkce')">×</button>
+    </div>
+    <div class="modal-body">
+      <table class="dagılım-table">
+        <thead>
+          <tr>
+            <th>KONULAR</th><th>2015</th><th>2016</th><th>2017</th><th>2018</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Sözcükte Anlam</td><td>2</td><td>2</td><td>5</td><td>5</td><td>5</td><td>4</td><td>4</td><td>3</td><td>4</td><td>4</td><td>4</td></tr>
+          <tr><td>Cümlede Anlam</td><td>26</td><td>26</td><td>22</td><td>22</td><td>22</td><td>23</td><td>23</td><td>20</td><td>16</td><td>16</td><td>16</td></tr>
+          <tr><td>Paragrafta Anlam</td><td>23</td><td>23</td><td>25</td><td>24</td><td>25</td><td>26</td><td>26</td><td>22</td><td>22</td><td>22</td><td>22</td></tr>
+          <tr><td>Sözel Mantık</td><td>9</td><td>9</td><td>8</td><td>9</td><td>8</td><td>7</td><td>7</td><td>5</td><td>8</td><td>8</td><td>8</td></tr>
+          <tr class="toplam-row"><td>TOPLAM</td><td>60</td><td>60</td><td>60</td><td>60</td><td>60</td><td>60</td><td>60</td><td>50</td><td>50</td><td>50</td><td>50</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: MATEMATİK SORU DAĞILIMI -->
+
+<div class="modal-overlay" id="modalMatematik">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>📊 DGS Matematik Soru Dağılımı</h2>
+      <button class="modal-close" onclick="closeModal('modalMatematik')">×</button>
+    </div>
+    <div class="modal-body">
+      <table class="dagılım-table">
+        <thead>
+          <tr>
+            <th>KONULAR</th><th>2017</th><th>2018</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Temel Kavramlar</td><td>1</td><td>1</td><td>2</td><td>3</td><td>2</td><td>1</td><td>3</td><td>2</td><td>2</td></tr>
+          <tr><td>Ardışık Sayılar</td><td>1</td><td>1</td><td class="sifir">–</td><td>1</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>Sayı Basamakları</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>1</td><td>2</td><td>3</td></tr>
+          <tr><td>Bölme ve Bölünebilme</td><td>2</td><td class="sifir">–</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Asal Sayılar</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>OBEB-OKEK</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>Faktöriyel</td><td>1</td><td class="sifir">–</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Basit Eşitsizlikler</td><td>2</td><td>3</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td></tr>
+          <tr><td>Mutlak Değer</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Rasyonel Sayılar</td><td>2</td><td class="sifir">–</td><td>2</td><td>2</td><td>2</td><td>1</td><td>2</td><td>1</td><td>1</td></tr>
+          <tr><td>Üslü Sayılar</td><td>2</td><td>2</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+          <tr><td>Köklü Sayılar</td><td>1</td><td>2</td><td>2</td><td>1</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Oran-Orantı</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>Çarpanlara Ayırma</td><td>1</td><td>1</td><td>2</td><td class="sifir">–</td><td>1</td><td class="sifir">–</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>Denklem Çözme</td><td>1</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td class="sifir">–</td><td>1</td><td>1</td></tr>
+          <tr><td>Sayı ve Kesir Problemleri</td><td>8</td><td>7</td><td>4</td><td>5</td><td>6</td><td>1</td><td>4</td><td>4</td><td>3</td></tr>
+          <tr><td>Yaş Problemleri</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Hareket & Hız Problemleri</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Karışım Problemleri</td><td class="sifir">–</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>İşçi-Havuz Problemleri</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>Yüzde & Kar–Zarar Problemleri</td><td>1</td><td>1</td><td>3</td><td>2</td><td>2</td><td>4</td><td>2</td><td>1</td><td>3</td></tr>
+          <tr><td>Tablo–Grafik Problemleri</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td>1</td><td>2</td><td>2</td><td>3</td></tr>
+          <tr><td>Saat-Gün Problemleri</td><td>2</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td>2</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>Kümeler</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Fonksiyonlar</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td class="sifir">–</td><td>1</td><td>1</td></tr>
+          <tr><td>Sayı Dizileri</td><td>1</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>Permütasyon ve Kombinasyon</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td class="sifir">–</td><td>1</td></tr>
+          <tr><td>Olasılık</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td class="sifir">–</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>İşlem ve Modüler Aritmetik</td><td>1</td><td>1</td><td>1</td><td>4</td><td>3</td><td class="sifir">–</td><td>1</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>Grafik ve Tablolar</td><td class="sifir">–</td><td>3</td><td>6</td><td>2</td><td>2</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td><td class="sifir">–</td></tr>
+          <tr><td>Sayısal Mantık</td><td>13</td><td>17</td><td>15</td><td>15</td><td>13</td><td>17</td><td>13</td><td>17</td><td>13</td></tr>
+          <tr class="toplam-row"><td>TOPLAM</td><td>53</td><td>53</td><td>53</td><td>53</td><td>53</td><td>43</td><td>43</td><td>43</td><td>43</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: GEOMETRİ SORU DAĞILIMI -->
+
+<div class="modal-overlay" id="modalGeometri">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>📊 DGS Geometri Soru Dağılımı</h2>
+      <button class="modal-close" onclick="closeModal('modalGeometri')">×</button>
+    </div>
+    <div class="modal-body">
+      <table class="dagılım-table">
+        <thead>
+          <tr>
+            <th>KONULAR</th><th>2017</th><th>2018</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Açılar ve Üçgenler</td><td class="sifir">–</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td></tr>
+          <tr><td>Dörtgenler</td><td>2</td><td>1</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td><td>1</td><td>1</td></tr>
+          <tr><td>Çokgenler</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Çember ve Daire</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>1</td><td>1</td></tr>
+          <tr><td>Katı Cisim</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Analitik Geometri</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr class="toplam-row"><td>TOPLAM</td><td>7</td><td>7</td><td>7</td><td>7</td><td>7</td><td>7</td><td>7</td><td>7</td><td>7</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
