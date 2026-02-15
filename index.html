@@ -167,6 +167,11 @@
     animation: fadeUp .45s .1s ease both;
   }
 
+  .dash-cards-bottom {
+    grid-template-columns: 1fr !important;
+    margin-top: 14px;
+  }
+
   .dash-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -587,11 +592,6 @@
   }
 
   /* AYLIK PROGRAM */
-  .dash-cards-bottom {
-    grid-template-columns: 1fr !important;
-    max-width: 640px;
-    margin-top: 0;
-  }
 
   .dash-card.program::before { background: linear-gradient(90deg, var(--yellow), var(--green)); }
 
